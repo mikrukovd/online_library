@@ -1,4 +1,5 @@
 import json
+import os
 
 from livereload import Server
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -16,13 +17,23 @@ def render_page():
     env.filters["chunked"] = chunked
     template = env.get_template("template.html")
 
-    chunk_size = (len(books)+1) // 2
-    columns = list(chunked(books, chunk_size))
-
-    page = template.render(columns=columns)
+    os.makedirs("pages", exist_ok=True)
+    books_per_page = 10
+    chunked_books = list(chunked(books, books_per_page))
+    for page_num, book_chunk in enumerate(chunked_books, start=1):
+        columns = [
+            book_chunk[:len(book_chunk)//2],
+            book_chunk[len(book_chunk)//2:]
+        ]
+        rendered_page = template.render(
+            columns=columns,
+            current_page=page_num,
+        )
+        with open(f"pages/index{page_num}.html", "w", encoding="utf8") as file:
+            file.write(rendered_page)
 
     with open("index.html", "w", encoding="utf8") as file:
-        file.write(page)
+        file.write(open("pages/index1.html", "r", encoding="utf8").read())
 
 
 render_page()
