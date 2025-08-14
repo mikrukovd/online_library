@@ -25,6 +25,6 @@
     ```
 3. Запустите сервер:
     ```bash
-    python render_website
+    python render_website.py
     ```
 4. Откройте в браузере ссылку [http://127.0.0.1:5500](http://127.0.0.1:5500)
