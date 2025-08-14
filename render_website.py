@@ -1,5 +1,6 @@
 import json
 import os
+import math
 
 from livereload import Server
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -20,6 +21,7 @@ def render_page():
     os.makedirs("pages", exist_ok=True)
     books_per_page = 10
     chunked_books = list(chunked(books, books_per_page))
+    total_pages = math.ceil(len(books) / books_per_page)
     for page_num, book_chunk in enumerate(chunked_books, start=1):
         columns = [
             book_chunk[:len(book_chunk)//2],
@@ -28,6 +30,7 @@ def render_page():
         rendered_page = template.render(
             columns=columns,
             current_page=page_num,
+            total_pages=total_pages,
         )
         with open(f"pages/index{page_num}.html", "w", encoding="utf8") as file:
             file.write(rendered_page)

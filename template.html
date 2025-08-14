@@ -11,6 +11,35 @@
   </head>
   <body>
     <div class="container">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          {% if current_page > 1 %}
+            <li class="page-item">
+              <a class="page-link" href="../pages/index{{ current_page - 1 }}.html" tabindex="-1">Назад</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Назад</a>
+            </li>
+          {% endif %}
+
+          {% for page in range(1, total_pages + 1) %}
+            <li class="page-item {% if page == current_page %}active{% endif %}">
+              <a class="page-link" href="../pages/index{{ page }}.html">{{ page }}</a>
+            </li>
+          {% endfor %}
+
+          {% if current_page < total_pages %}
+            <li class="page-item">
+              <a class="page-link" href="../pages/index{{ current_page + 1 }}.html">Вперёд</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#">Вперёд</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
       <div class="row">
         <!-- Левая колонка -->
         <div class="col-md-6">
@@ -18,7 +47,7 @@
             <div class="card mb-3" style="max-width: 540px;">
               <div class="row no-gutters">
                 <div class="col-md-4">
-                  <img src="{{ book.img_src }}" class="card-img" alt="Обложка книги">
+                  <img src="/{{ book.img_src }}" class="card-img" alt="Обложка книги">
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
@@ -37,7 +66,7 @@
             <div class="card mb-3" style="max-width: 540px;">
               <div class="row no-gutters">
                 <div class="col-md-4">
-                  <img src="{{ book.img_src }}" class="card-img" alt="Обложка книги">
+                  <img src="/{{ book.img_src }}" class="card-img" alt="Обложка книги">
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
