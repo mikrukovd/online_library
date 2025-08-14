@@ -21,7 +21,7 @@
         <ul class="pagination">
           {% if current_page > 1 %}
             <li class="page-item">
-              <a class="page-link" href="pages/index{{ current_page - 1 }}.html" tabindex="-1">Назад</a>
+              <a class="page-link" href="index{{ current_page - 1 }}.html" tabindex="-1">Назад</a>
             </li>
           {% else %}
             <li class="page-item disabled">
@@ -31,13 +31,13 @@
 
           {% for page in range(1, total_pages + 1) %}
             <li class="page-item {% if page == current_page %}active{% endif %}">
-              <a class="page-link" href="pages/index{{ page }}.html">{{ page }}</a>
+              <a class="page-link" href="index{{ page }}.html">{{ page }}</a>
             </li>
           {% endfor %}
 
           {% if current_page < total_pages %}
             <li class="page-item">
-              <a class="page-link" href="pages/index{{ current_page + 1 }}.html">Вперёд</a>
+              <a class="page-link" href="index{{ current_page + 1 }}.html">Вперёд</a>
             </li>
           {% else %}
             <li class="page-item disabled">
