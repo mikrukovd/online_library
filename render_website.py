@@ -12,11 +12,10 @@ def is_github_pages():
 
 
 def get_base_url():
-    """Автоматически определяет правильный base_url"""
-    # Для GitHub Pages (ваш репозиторий: online_library)
-    if os.path.exists('/github/workspace') or 'GITHUB_ACTIONS' in os.environ:
-        return "/online_library"
-    # Для локального запуска
+    '''Определяем базовый URL в зависимости от окружения'''
+    if is_github_pages():
+        repo_name = os.environ.get('GITHUB_REPOSITORY', '').split('/')[-1]
+        return f"/{repo_name}" if repo_name else ""
     return ""
 
 
