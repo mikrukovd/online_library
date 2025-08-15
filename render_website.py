@@ -14,10 +14,17 @@ def render_mode():
     return "/" if mode == "livereload" else "/online_library/"
 
 
+def prepare_books(books):
+    '''Подготавливает данные для рендера'''
+    for book in books:
+        book['genres'] = book['genres'].replace('.', '').split(', ')
+    return books
+
+
 def render_pages():
     '''Рендер страниц'''
     with open("meta_data.json", "r", encoding="utf8") as file:
-        books = json.load(file)
+        books = prepare_books(json.load(file))
 
     env = Environment(
         loader=FileSystemLoader("."),
