@@ -10,17 +10,14 @@ from dotenv import load_dotenv
 
 def render_mode():
     '''Режим работы рендера'''
-    mode = os.getenv("MODE", "github")
-    if mode == "livereload":
-        return "/"
-    else:
-        return "/online_library/"
+    mode = os.getenv("MODE", "")
+    return "/" if mode == "livereload" else "/online_library/"
 
 
 def render_pages():
     '''Рендер страниц'''
-    with open("meta_data.json", "r", encoding="utf8") as my_file:
-        books = json.load(my_file)
+    with open("meta_data.json", "r", encoding="utf8") as file:
+        books = json.load(file)
 
     env = Environment(
         loader=FileSystemLoader("."),
@@ -31,14 +28,15 @@ def render_pages():
 
     os.makedirs("pages", exist_ok=True)
     books_per_page = 10
+    books_per_row = 2
     chunked_books = list(chunked(books, books_per_page))
     total_pages = math.ceil(len(books) / books_per_page)
     base_path = render_mode()
 
     for page_num, book_chunk in enumerate(chunked_books, start=1):
         columns = [
-            book_chunk[:len(book_chunk)//2],
-            book_chunk[len(book_chunk)//2:]
+            book_chunk[:len(book_chunk)//books_per_row],
+            book_chunk[len(book_chunk)//books_per_row:]
         ]
         rendered_page = template.render(
             columns=columns,
