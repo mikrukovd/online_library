@@ -8,12 +8,6 @@ from more_itertools import chunked
 from dotenv import load_dotenv
 
 
-def render_mode():
-    '''Режим работы рендера'''
-    mode = os.getenv("MODE", "")
-    return "/" if mode == "livereload" else "/online_library/"
-
-
 def prepare_books(books):
     '''Подготавливает данные для рендера'''
     for book in books:
@@ -38,7 +32,7 @@ def render_pages():
     books_per_row = 2
     chunked_books = list(chunked(books, books_per_page))
     total_pages = math.ceil(len(books) / books_per_page)
-    base_path = render_mode()
+    base_path = "../"
 
     for page_num, book_chunk in enumerate(chunked_books, start=1):
         columns = [
@@ -54,9 +48,6 @@ def render_pages():
         with open(f"pages/index{page_num}.html", "w", encoding="utf8") as file:
             file.write(rendered_page)
 
-    with open("index.html", "w", encoding="utf8") as file:
-        file.write(open("pages/index1.html", "r", encoding="utf8").read())
-
 
 def main():
     load_dotenv()
@@ -64,7 +55,10 @@ def main():
     server = Server()
     server.watch("template.html", render_pages)
 
-    server.serve(root=".", port=5500, host="127.0.0.1")
+    server.serve(
+        root=".", port=5500,
+        host="127.0.0.1", default_filename="./pages/index1.html"
+    )
 
 
 if __name__ == "__main__":
