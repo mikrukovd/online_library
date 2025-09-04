@@ -32,7 +32,7 @@ def render_pages():
     books_per_row = 2
     chunked_books = list(chunked(books, books_per_page))
     total_pages = math.ceil(len(books) / books_per_page)
-    base_path = "../"
+    base_path = "/online_library"
 
     for page_num, book_chunk in enumerate(chunked_books, start=1):
         columns = [
