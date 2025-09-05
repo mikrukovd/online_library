@@ -18,9 +18,9 @@ def prepare_books(books):
     return books
 
 
-def render_pages():
+def render_pages(books_path):
     '''Рендер страниц'''
-    with open("meta_data.json", "r", encoding="utf8") as file:
+    with open(books_path, "r", encoding="utf8") as file:
         books = prepare_books(json.load(file))
 
     env = Environment(
@@ -54,7 +54,8 @@ def render_pages():
 
 def main():
     load_dotenv()
-    render_pages()
+    books_path = os.getenv("BOOKS_PATH", default="meta_data.json")
+    render_pages(books_path)
     server = Server()
     server.watch("template.html", render_pages)
 
