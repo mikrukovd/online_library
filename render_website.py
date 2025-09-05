@@ -6,12 +6,15 @@ from livereload import Server
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from more_itertools import chunked
 from dotenv import load_dotenv
+from urllib.parse import quote
 
 
 def prepare_books(books):
     '''Подготавливает данные для рендера'''
     for book in books:
         book["genres"] = book["genres"].replace(".", "").split(", ")
+        book["img_src"] = quote(book["img_src"])
+        book["book_path"] = quote(book["book_path"])
     return books
 
 
