@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 def prepare_books(books):
     '''Подготавливает данные для рендера'''
     for book in books:
-        book['genres'] = book['genres'].replace('.', '').split(', ')
+        book["genres"] = book["genres"].replace(".", "").split(", ")
     return books
 
 
