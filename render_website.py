@@ -6,18 +6,21 @@ from livereload import Server
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from more_itertools import chunked
 from dotenv import load_dotenv
+from urllib.parse import quote
 
 
 def prepare_books(books):
     '''Подготавливает данные для рендера'''
     for book in books:
-        book['genres'] = book['genres'].replace('.', '').split(', ')
+        book["genres"] = book["genres"].replace(".", "").split(", ")
+        book["img_src"] = quote(book["img_src"])
+        book["book_path"] = quote(book["book_path"])
     return books
 
 
-def render_pages():
+def render_pages(books_path):
     '''Рендер страниц'''
-    with open("meta_data.json", "r", encoding="utf8") as file:
+    with open(books_path, "r", encoding="utf8") as file:
         books = prepare_books(json.load(file))
 
     env = Environment(
@@ -51,7 +54,8 @@ def render_pages():
 
 def main():
     load_dotenv()
-    render_pages()
+    books_path = os.getenv("BOOKS_PATH", default="meta_data.json")
+    render_pages(books_path)
     server = Server()
     server.watch("template.html", render_pages)
 
